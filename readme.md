@@ -12,6 +12,7 @@ cd frontend && npm install
 Para iniciar aplicacion ejecutar
 
 ```
+npm run data:import
 npm run dev
 ```
 
