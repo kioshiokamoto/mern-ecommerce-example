@@ -1,6 +1,24 @@
 import './ProductScreen.css';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-const ProductScreen = () => {
+//Action
+import { getProductDetails } from '../redux/actions/productActions';
+import { addToCart } from '../redux/actions/cartActions';
+
+const ProductScreen = ({ match, history }) => {
+	const [qty, setQty] = useState(1);
+	const dispatch = useDispatch();
+
+	const productDetails = useSelector((state) => state.getProductDetails);
+	const { loading, error, product } = productDetails;
+    useEffect(()=>{
+        if(product && match.params.id !== product._id){
+            //Se guarda en estado en redux
+            dispatch(getProductDetails(match.params.id))
+        }
+    },[dispatch, product,match])
+
 	return (
 		<div className="productscreen">
 			<div className="productscreen__left">
@@ -10,34 +28,36 @@ const ProductScreen = () => {
 						alt="alt"
 					/>
 				</div>
-                <div className="left__info">
-                    <p className="left__name">Product 1</p>
-                    <p className="">Price: $488.8</p>
-                    <p className="">Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, molestiae.</p>
-                </div>
+				<div className="left__info">
+					<p className="left__name">Product 1</p>
+					<p className="">Price: $488.8</p>
+					<p className="">
+						Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, molestiae.
+					</p>
+				</div>
 			</div>
 			<div className="productscreen__right">
-                <div className="right__info">
-                    <p>
-                        Price: <span>$499.9</span>
-                    </p>
-                    <p>
-                        Status: <span>In stock</span>
-                    </p>
-                    <p>
-                        Qty
-                        <select>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </p>
-                    <p>
-                        <button>Add to cart</button>
-                    </p>
-                </div>
-            </div>
+				<div className="right__info">
+					<p>
+						Price: <span>$499.9</span>
+					</p>
+					<p>
+						Status: <span>In stock</span>
+					</p>
+					<p>
+						Qty
+						<select>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
+					</p>
+					<p>
+						<button>Add to cart</button>
+					</p>
+				</div>
+			</div>
 		</div>
 	);
 };
